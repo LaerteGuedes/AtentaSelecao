@@ -17,16 +17,4 @@ import java.util.List;
 @Repository("compraDao")
 public class CompraDao extends AbstractDao<Integer, Compra> implements ICompraDao {
 
-    @Autowired
-    private EntityManagerFactory entityManagerFactory;
-
-    public List<Compra> findAllByUsuarioId(Usuario usuario){
-        EntityManager manager = entityManagerFactory.createEntityManager();
-        Query query = manager.createQuery("select c from Compra c WHERE c.usuario = :usuario");
-        query.setParameter("usuario", usuario);
-
-        List<Compra> compras = query.getResultList();
-        return compras;
-    }
-
 }

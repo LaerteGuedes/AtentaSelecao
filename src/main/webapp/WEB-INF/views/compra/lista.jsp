@@ -20,6 +20,7 @@
             <a href="/compra/cadastro" class="btn">Adicionar</a>
             <c:choose>
                 <c:when test="${fn:length(compras) gt 0}">
+                    <a class="btn" href="/compra/listaxml" >Ver em formato XML</a>
                     <table class="highlight">
                         <tr class="grey">
                             <th>Id</th>

@@ -6,6 +6,9 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Usuario.findByEmailAndSenha", query = "select u FROM Usuario u WHERE u.email = :email AND u.senha = :senha")
+})
 @Table(name="usuario")
 public class Usuario {
 
@@ -15,9 +18,12 @@ public class Usuario {
 
     @NotNull
     @Size(min=5)
+    @Column
     private String email;
+
     @NotNull
     @Size(min=5)
+    @Column
     private String senha;
 
     public Integer getId() {

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 21, 2016 at 03:36 PM
+-- Generation Time: Feb 23, 2016 at 01:51 PM
 -- Server version: 5.6.25-3+deb.sury.org~trusty+1
 -- PHP Version: 5.5.9-1ubuntu4.14
 
@@ -29,32 +29,15 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `compra` (
   `id` int(11) NOT NULL,
   `mercado` varchar(200) DEFAULT NULL,
-  `date` date DEFAULT NULL,
-  `id_usuario` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+  `date` date DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `compra`
 --
 
-INSERT INTO `compra` (`id`, `mercado`, `date`, `id_usuario`) VALUES
-(4, 'Estrela Dalva', '2016-03-29', NULL),
-(5, 'Formosa', '2016-06-01', NULL),
-(7, 'Formosa', '2016-03-01', NULL),
-(8, 'teste', '1991-03-21', NULL),
-(9, 'teste', '1991-03-22', NULL),
-(10, 'Mercantil ', '2020-03-29', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `mercado`
---
-
-CREATE TABLE IF NOT EXISTS `mercado` (
-  `id` int(11) NOT NULL,
-  `nome` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `compra` (`id`, `mercado`, `date`) VALUES
+(26, 'Lider', '2016-01-20');
 
 -- --------------------------------------------------------
 
@@ -66,21 +49,19 @@ CREATE TABLE IF NOT EXISTS `produto` (
   `id` int(11) NOT NULL,
   `nome` varchar(200) DEFAULT NULL,
   `marca` varchar(200) DEFAULT NULL,
-  `valor` double DEFAULT NULL,
+  `valor` decimal(13,2) DEFAULT NULL,
   `validade` date DEFAULT NULL,
   `tipo` varchar(200) DEFAULT NULL,
   `consumido` tinyint(1) DEFAULT NULL,
-  `id_compra` int(11) NOT NULL
+  `compra_id` int(11) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `produto`
 --
 
-INSERT INTO `produto` (`id`, `nome`, `marca`, `valor`, `validade`, `tipo`, `consumido`, `id_compra`) VALUES
-(3, 'Manteiga 2', 'Primor', 3, '2016-03-20', 'Enlatados', 0, 4),
-(4, 'Salcicha', 'Target', 4.5, '2016-03-20', 'Frios', 0, 4),
-(5, 'Cerveja', 'Itaipava', 6.2, '2017-03-22', 'Enlatados', 0, 5);
+INSERT INTO `produto` (`id`, `nome`, `marca`, `valor`, `validade`, `tipo`, `consumido`, `compra_id`) VALUES
+(4, 'Iogurte', 'Danone', 8.50, '2017-03-22', 'Derivados do leite', 0, 26);
 
 -- --------------------------------------------------------
 
@@ -92,14 +73,15 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `id` int(11) NOT NULL,
   `email` varchar(100) DEFAULT NULL,
   `senha` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `usuario`
 --
 
 INSERT INTO `usuario` (`id`, `email`, `senha`) VALUES
-(1, 'laerte@test.com', 'teste');
+(1, 'laerte@test.com', 'teste'),
+(2, 'teste@test.com', 'teste');
 
 --
 -- Indexes for dumped tables
@@ -109,19 +91,13 @@ INSERT INTO `usuario` (`id`, `email`, `senha`) VALUES
 -- Indexes for table `compra`
 --
 ALTER TABLE `compra`
-  ADD PRIMARY KEY (`id`), ADD KEY `id_mercado` (`mercado`), ADD KEY `id_usuario` (`id_usuario`);
-
---
--- Indexes for table `mercado`
---
-ALTER TABLE `mercado`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `id_mercado` (`mercado`);
 
 --
 -- Indexes for table `produto`
 --
 ALTER TABLE `produto`
-  ADD PRIMARY KEY (`id`), ADD KEY `id_compra` (`id_compra`), ADD KEY `id_compra_2` (`id_compra`);
+  ADD PRIMARY KEY (`id`), ADD KEY `id_compra` (`compra_id`), ADD KEY `id_compra_2` (`compra_id`), ADD KEY `compra_id` (`compra_id`);
 
 --
 -- Indexes for table `usuario`
@@ -137,7 +113,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT for table `compra`
 --
 ALTER TABLE `compra`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT for table `produto`
 --
@@ -147,22 +123,16 @@ ALTER TABLE `produto`
 -- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `compra`
---
-ALTER TABLE `compra`
-ADD CONSTRAINT `fk_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`);
-
---
 -- Constraints for table `produto`
 --
 ALTER TABLE `produto`
-ADD CONSTRAINT `fk_compra` FOREIGN KEY (`id_compra`) REFERENCES `compra` (`id`);
+ADD CONSTRAINT `fk_compra` FOREIGN KEY (`compra_id`) REFERENCES `compra` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

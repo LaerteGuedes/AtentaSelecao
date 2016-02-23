@@ -39,7 +39,7 @@
             <form:select path="tipo" items="${tipos}">
             </form:select>
           </div>
-          <fmt:formatDate type="date" pattern="yyyy-MM-dd" var="dateF" value="${produto.validade}"/>
+          <fmt:formatDate type="date" pattern="dd/MM/yyyy" var="dateF" value="${produto.validade}"/>
 
           <div class="input-field col s12">
             <form:label path="validade">Validade:</form:label>
@@ -48,7 +48,7 @@
 
             <input type="hidden" name="id_compra" value="${compra.id}">
             <input type="hidden" name="id" value="${produto.id}">
-          <form:hidden path="consumido" value="false"></form:hidden>
+          <form:hidden path="consumido" value="${produto.consumido}"></form:hidden>
           <div class="input-field col s12">
             <button class="btn">Enviar</button>
           </div>

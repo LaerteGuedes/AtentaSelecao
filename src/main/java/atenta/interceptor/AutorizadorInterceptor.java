@@ -6,9 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- * Created by laerteguedes on 19/02/16.
- */
 public class AutorizadorInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request,
@@ -17,6 +14,7 @@ public class AutorizadorInterceptor extends HandlerInterceptorAdapter {
         String uri = request.getRequestURI();
 
         if (!uri.contains("login")){
+            System.out.println(request.getSession().getAttribute("usuario"));
             if (request.getSession().getAttribute("usuario") != null){
                 return true;
             }
@@ -24,6 +22,8 @@ public class AutorizadorInterceptor extends HandlerInterceptorAdapter {
             response.sendRedirect("/login/form");
             return false;
         }
+
+        System.out.println(request.getSession().getAttribute("usuario"));
 
         return true;
     }

@@ -10,28 +10,20 @@ import javax.persistence.*;
 @Repository("usuarioDao")
 public class UsuarioDao extends AbstractDao<Integer, Usuario> implements IUsuarioDao{
 
-    @Autowired
-    private EntityManagerFactory entityManagerFactory;
-
     public void save(Usuario usuario){
         store(usuario);
     }
 
-    public Boolean existeLogin(Usuario usuario){
+    public Usuario findByEmailAndSenha(Usuario usuario){
         String email = usuario.getEmail();
         String senha = usuario.getSenha();
 
-        EntityManager manager = entityManagerFactory.createEntityManager();
-        Query query = manager.createQuery("select u from Usuario u WHERE u.email = :email AND u.senha = :senha");
+        EntityManager manager = getEntityManager();
+        Query query = manager.createNamedQuery("Usuario.findByEmailAndSenha");
         query.setParameter("email", email);
         query.setParameter("senha", senha);
 
-        try{
-            Usuario usuarioLogin = (Usuario) query.getSingleResult();
-        }catch (NoResultException e){
-            return false;
-        }
-
-        return true;
+        Usuario usuarioLogin = (Usuario) query.getSingleResult();
+        return usuarioLogin;
     }
 }

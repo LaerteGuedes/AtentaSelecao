@@ -31,6 +31,7 @@
             <ul id="slide-out" class="side-nav">
                 <li><a href="/compra/lista">Lista geral de compras</a></li>
                 <li><a href="/produto/lista">Lista de produtos na Geladeira</a></li>
+                <li><a href="/produto/listaconsumidos">Lista de produtos consumidos</a></li>
                 <li><a href="/login/logout">Sair</a></li>
             </ul>
             <a href="#" data-activates="slide-out" class="button-collapse show-on-large"><i class="mdi-navigation-menu"></i></a>

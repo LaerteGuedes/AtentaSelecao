@@ -6,14 +6,17 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import java.math.BigDecimal;
 import java.util.Date;
 
-/**
- * Created by laerteguedes on 18/02/16.
- */
 @Entity
 @Table(name="produto")
-@XmlRootElement(name="produto")
+@NamedQueries({
+        @NamedQuery(name = "Produto.findAllConsumedOrNot", query = "select p FROM Produto p WHERE p.consumido = :consumido"),
+
+})
+@XmlRootElement
 public class Produto {
 
     @Id
@@ -21,30 +24,37 @@ public class Produto {
     private Integer id;
 
     @NotNull
+    @Column
     private String nome;
+
+    @Column
     private String marca;
 
     @NotNull
-    private double valor;
+    @Column
+    private BigDecimal valor;
 
     @NotNull
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @Column
     private Date validade;
 
     @NotNull
+    @Column
     private String tipo;
+
+    @Column
     private boolean consumido;
 
     @ManyToOne
-    @JoinColumn(name="id_compra")
+    @JoinColumn(name = "compra_id")
     private Compra compra;
 
     public Integer getId() {
         return id;
     }
 
-    @XmlElement
     public void setId(Integer id) {
         this.id = id;
     }
@@ -53,7 +63,6 @@ public class Produto {
         return nome;
     }
 
-    @XmlElement
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -62,17 +71,15 @@ public class Produto {
         return marca;
     }
 
-    @XmlElement
     public void setMarca(String marca) {
         this.marca = marca;
     }
 
-    public double getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 
-    @XmlElement
-    public void setValor(double valor) {
+    public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
 
@@ -84,12 +91,10 @@ public class Produto {
         return tipo;
     }
 
-    @XmlElement
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 
-    @XmlElement
     public void setValidade(Date validade) {
         this.validade = validade;
     }
@@ -98,16 +103,15 @@ public class Produto {
         return consumido;
     }
 
-    @XmlElement
     public void setConsumido(boolean consumido) {
         this.consumido = consumido;
     }
 
+    @XmlTransient
     public Compra getCompra() {
         return compra;
     }
 
-    @XmlElement
     public void setCompra(Compra compra) {
         this.compra = compra;
     }

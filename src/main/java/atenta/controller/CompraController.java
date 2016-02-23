@@ -1,10 +1,14 @@
 package atenta.controller;
 
 import atenta.dao.contracts.ICompraDao;
+import atenta.dao.contracts.IUsuarioDao;
 import atenta.model.Compra;
+import atenta.util.Compras;
+import atenta.model.Usuario;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -19,9 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by laerteguedes on 18/02/16.
- */
+
 @Controller
 @RequestMapping("/compra")
 public class CompraController extends AbstractController{
@@ -37,15 +39,26 @@ public class CompraController extends AbstractController{
     }
 
     @RequestMapping(value="/lista", method = RequestMethod.GET)
-    public String lista(ModelMap model, HttpSession session){
+    public String lista(ModelMap model){
         List<Compra> compras = compraDao.findAll();
         model.addAttribute("compras", compras);
 
         return "/compra/lista";
     }
 
+    @RequestMapping(value="/listaxml", method = RequestMethod.GET,produces = "application/xml")
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody
+    Compras listaXml(ModelMap model){
+        List<Compra> compras = compraDao.findAll();
+        Compras comprasList = new Compras();
+        comprasList.setCompraList(compras);
+
+        return comprasList;
+    }
+
     @RequestMapping(value="/cadastro", method = RequestMethod.GET)
-    public String cadastro(ModelMap model, HttpServletRequest request){
+    public String cadastro(ModelMap model){
         model.addAttribute("compra", new Compra());
 
         return "/compra/cadastro";
@@ -65,7 +78,6 @@ public class CompraController extends AbstractController{
 
     @RequestMapping(value = "/salva", method = RequestMethod.POST)
     public String salva(ModelMap model, @Valid @ModelAttribute("compra")Compra compra, BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest request){
-        System.out.println(result.getFieldError());
         if (result.hasErrors()) {
             model.addAttribute("error", true);
             return "/compra/cadastro";

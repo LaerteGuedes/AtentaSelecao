@@ -4,14 +4,21 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by laerteguedes on 18/02/16.
- */
 @Entity
 @Table(name="compra")
+@NamedQueries({
+        @NamedQuery(name = "Compra.findAllOrderByDate", query = "select c FROM Compra c ORDER BY c.date"),
+
+})
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Compra{
 
     @Id
@@ -21,17 +28,17 @@ public class Compra{
     @Temporal(TemporalType.DATE)
     @NotNull
     @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @Column
     private Date date;
 
     @NotNull
+    @Column
     private String mercado;
 
-    @OneToMany(mappedBy = "compra", targetEntity = Produto.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "compra",targetEntity = Produto.class, fetch = FetchType.EAGER)
+    @OrderBy("nome")
+    @XmlElement(name="produto")
     private List<Produto> produtos;
-
-    @ManyToOne
-    @JoinColumn(name = "id_usuario")
-    private Usuario usuario;
 
     public Integer getId() {
         return id;
@@ -63,13 +70,5 @@ public class Compra{
 
     public void setProdutos(List<Produto> produtos) {
         this.produtos = produtos;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
     }
 }

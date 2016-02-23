@@ -29,7 +29,7 @@ public abstract class AbstractDao<PK extends Serializable, T> {
 	}
 
 	public T findById(PK key){
-		EntityManager manager = entityManagerFactory.createEntityManager();
+		EntityManager manager = getEntityManager();
 
 		try{
 			return manager.find(persistentClass, key);
@@ -39,7 +39,7 @@ public abstract class AbstractDao<PK extends Serializable, T> {
 	}
 
 	public List<T> findAll() {
-		EntityManager manager = entityManagerFactory.createEntityManager();
+		EntityManager manager = getEntityManager();
 		Query query = manager.createQuery("Select t from " + persistentClass.getSimpleName() + " t");
 		List<T> result = query.getResultList();
 		manager.close();
@@ -47,7 +47,7 @@ public abstract class AbstractDao<PK extends Serializable, T> {
 	}
 
 	public void store(T entity){
-		EntityManager manager = entityManagerFactory.createEntityManager();
+		EntityManager manager = getEntityManager();
 		EntityTransaction tx = manager.getTransaction();
 
 		try{
@@ -64,7 +64,7 @@ public abstract class AbstractDao<PK extends Serializable, T> {
 	}
 
 	public void delete(PK key){
-		EntityManager manager = entityManagerFactory.createEntityManager();
+		EntityManager manager = getEntityManager();
 		EntityTransaction tx = manager.getTransaction();
 
 		try{

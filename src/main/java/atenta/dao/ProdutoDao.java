@@ -13,13 +13,11 @@ import java.util.List;
 @Repository("produtoDao")
 public class ProdutoDao extends AbstractDao<Integer, Produto> implements IProdutoDao{
 
-    @Autowired
-    private EntityManagerFactory entityManagerFactory;
+    public List<Produto> findAllConsumidoOrNot(Boolean consumido) {
+        EntityManager manager = getEntityManager();
+        Query query = manager.createNamedQuery("Produto.findAllConsumedOrNot");
+        query.setParameter("consumido", consumido);
 
-    public List<Produto> findAllNotConsumed() {
-        EntityManager manager = entityManagerFactory.createEntityManager();
-        Query query = manager.createQuery("Select p from Produto p WHERE p.consumido = :consumido");
-        query.setParameter("consumido", false);
         List<Produto> result = query.getResultList();
         manager.close();
         return result;
